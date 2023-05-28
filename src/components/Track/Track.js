@@ -1,10 +1,12 @@
 import React from 'react'
 import './Track.scss'
 
-const Track = () => {
+const Track = ({ track }) => {
   return (
     <div>
-      <h2>Track</h2>
+      <h3>{track.name}</h3>
+      <p>Artist: {track.artist}</p>
+      <p>Album: {track.album}</p>
     </div>
   )
 }
