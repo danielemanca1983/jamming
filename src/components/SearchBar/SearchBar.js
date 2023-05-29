@@ -1,57 +1,26 @@
-import React, { useState } from 'react';
-import './Searchbar.scss'
+import React, { useState, useCallback } from "react";
 
-const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState(''); 
-  // State variable to store the search query
+import "./Searchbar.scss";
 
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+const SearchBar = (props) => {
+  const [term, setTerm] = useState("");
 
-  const searchSpotify = () => {
-    const searchEndpoint = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(
-      searchQuery
-    )}`;
+  const handleTermChange = useCallback((event) => {
+    setTerm(event.target.value);
+  }, []);
 
-    // Access Token
-    const accessToken = 'YOUR_ACCESS_TOKEN';
-
-    fetch(searchEndpoint, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Process the response data and extract the track information
-        const tracks = data.tracks.items.map((track) => ({
-          id: track.id,
-          name: track.name,
-          artist: track.artists[0].name,
-          album: track.album.name,
-          uri: track.uri,
-        }));
-
-        // Do something with the tracks (e.g., store them in state or pass them to another component)
-        console.log(tracks);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
-  };
+  const search = useCallback(() => {
+    props.onSearch(term);
+  }, [props.onSearch, term]);
 
   return (
-    <div>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleInputChange}
-        placeholder="Search for a track..."
-      />
-      <button onClick={searchSpotify}>Search</button>
+    <div className="SearchBar">
+      <input placeholder="Enter A Song Title" onChange={handleTermChange} />
+      <button className="SearchButton" onClick={search}>
+        SEARCH
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;
