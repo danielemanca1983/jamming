@@ -11,6 +11,8 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState("New Playlist");
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [loading, setLoading] = useState(false); // Track loading state
+
 
   const search = useCallback((term) => {
     Spotify.search(term).then(setSearchResults);
@@ -62,6 +64,7 @@ const App = () => {
           />
         </div>
       </div>
+      {loading && <div className="loading">Saving playlist...</div>}\
     </div>
   );
 };
